@@ -1,15 +1,15 @@
 import { api } from './api-client'
 
-type HTTPGetAccountInfoResponse = {
+type HTTPGetWalletInfoResponse = {
     balance: number
     createdAt: string,
     updatedAt: string
 }
 
-export async function HTTPGetAccountInfo() {
+export async function HTTPGetWalletInfo() {
     const result = await api
-        .get('api/account')
-        .json<HTTPGetAccountInfoResponse>()
+        .get('api/wallet')
+        .json<HTTPGetWalletInfoResponse>()
 
     return result
 }

@@ -7,7 +7,7 @@ import { HTTPGetProfileResponse } from "@/http/get-profile"
 import { AlertTriangle, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { openAccountAction } from "./actions"
+import { openWalletAction } from "./actions"
 
 const quickBalances = [
     { label: "100", value: "100" },
@@ -20,13 +20,13 @@ interface OpenAccountProps {
     user: HTTPGetProfileResponse['user']
 }
 
-export function OpenAccountForm({ user }: OpenAccountProps) {
+export function OpenWalletForm({ user }: OpenAccountProps) {
     const [balance, setBalance] = useState("")
 
     const router = useRouter()
 
-    const [{ success, message, errors }, handleOpenAccount, isPending] = useFormState(
-        openAccountAction,
+    const [{ success, message, errors }, handleOpenWallet, isPending] = useFormState(
+        openWalletAction,
         () => {
             router.push('/')
         }
@@ -49,7 +49,7 @@ export function OpenAccountForm({ user }: OpenAccountProps) {
     // }
 
     return (
-        <form className="w-full space-y-6" onSubmit={handleOpenAccount}>
+        <form className="w-full space-y-6" onSubmit={handleOpenWallet}>
             {success === false && message && (
                 <Alert variant="destructive">
                     <AlertTriangle className="size-5" />

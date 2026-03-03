@@ -7,13 +7,17 @@ import {
     SidebarProvider,
 } from "@/components/ui/sidebar"
 import { currentUser } from "@/strategies/current-user"
+import { getWallet } from "@/strategies/get-wallet"
 import { getUserInitials } from "@/utils/get-user-initials"
 
-// import data from './data.json'
-// import { DataTable } from "@/components/data-table"
+import data from './data.json'
+import { DataTable } from "@/components/data-table"
 
 export default async function AppPage() {
     const { user } = await currentUser()
+    const wallet = await getWallet()
+
+    console.log(wallet)
 
     const initials = getUserInitials({
         name: user.name,
@@ -26,6 +30,7 @@ export default async function AppPage() {
         avatar: user.avatarUrl ?? '',
         initials
     }
+
 
     return (
         <SidebarProvider
@@ -42,8 +47,8 @@ export default async function AppPage() {
                 <div className="flex flex-1 flex-col">
                     <div className="@container/main flex flex-1 flex-col gap-2">
                         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                            {/* <SectionCards /> */}
-                            <div className="px-4 lg:px-6">
+                            <SectionCards />
+                            <div className="px-4 lg:px-6 flex-3">
                                 <ProgressChartAreaInteractive />
                             </div>
                             {/* <DataTable data={data} /> */}

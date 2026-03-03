@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { currentUser } from "@/strategies/current-user"
 import { getUserInitials } from "@/utils/get-user-initials"
-import { OpenAccountForm } from "./open-account-form"
+import { OpenWalletForm } from "./open-wallet-form"
 
-export default async function OpenAccountPage() {
+export default async function OpenWalletPage() {
     const { user } = await currentUser()
     const userName = user.name ?? "Hello"
 
@@ -25,7 +25,7 @@ export default async function OpenAccountPage() {
                     </h1>
                 </div>
 
-                <OpenAccountForm user={user} />
+                <OpenWalletForm user={user} />
             </div>
         </main>
     )

@@ -1,10 +1,10 @@
 'use server'
 
-import { HTTPOpenAccount } from "@/http/open-account"
+import { HTTPOpenWallet } from "@/http/open-wallet"
 import { HTTPError } from "ky"
 import z from "zod"
 
-export async function openAccountAction(formData: FormData) {
+export async function openWalletAction(formData: FormData) {
     const formDataSchema = z.object({
         initialBalance: z.coerce.number().default(0)
     })
@@ -20,7 +20,7 @@ export async function openAccountAction(formData: FormData) {
     const { initialBalance } = parser.data
 
     try {
-        await HTTPOpenAccount({
+        await HTTPOpenWallet({
             initialBalance
         })
 

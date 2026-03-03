@@ -29,15 +29,18 @@ import {
 export const description = "An interactive area chart"
 
 const chartData = [
-    { date: "October 2025", expense: 0, income: 0 },
-    { date: "November 2025", expense: 0, income: 0 },
-    { date: "December 2025", expense: 250, income: 1800 },
     { date: "April 2025", expense: 0, income: 0 },
-    { date: "January 2026", expense: 0, income: 0 },
-    { date: "February 2026", expense: 20, income: 1000 },
-    { date: "February 2026", expense: 400, income: 0 },
-    { date: "February 2026", expense: 0, income: 100 },
-    { date: "February 2026", expense: 2500, income: 1000 },
+    { date: "May 2025", expense: 0, income: 0 },
+    { date: "June 2025", expense: 0, income: 0 },
+    { date: "July 2025", expense: 0, income: 0 },
+    { date: "August 2025", expense: 25, income: 0 },
+    { date: "September 2025", expense: 0, income: 0 },
+    { date: "October 2025", expense: 350, income: 670 },
+    { date: "November 2025", expense: 0, income: 0 },
+    { date: "December 2025", expense: 200, income: 114 },
+    { date: "January 2026", expense: 250, income: 500 },
+    { date: "February 2026", expense: 759.89, income: 1450.80 },
+    { date: "March 2026", expense: 1100, income: 2300 }
 ]
 
 const chartConfig = {
@@ -114,7 +117,9 @@ export function ProgressChartAreaInteractive() {
                             dataKey="date"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={12}
+                            tickMargin={10}
+                            interval="preserveStartEnd"
+                            padding={{ left: 12, right: 12 }}
                             tickFormatter={(value) => {
                                 const [month, year] = value.split(" ")
                                 return `${month.slice(0, 3)} ${year}`
