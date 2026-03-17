@@ -82,7 +82,23 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --purple-500: oklch(52.536% 0.24037 278.687);
+  --cyan-300: oklch(73.49% 0.12778 179.235);
+  --cyan-500: oklch(63.81% 0.10996 179.203);
+  --red-500: oklch(61.671% 0.1866 14.973);
+  --red-700: oklch(47.063% 0.14165 14.726);
+
+  --purple-400: oklch(61.04% 0.16042 285.198);
+  --purple-500: oklch(56.122% 0.21039 281.578);
+  --purple-600: oklch(47.934% 0.20024 280.04);
+
+  --theme-800: rgb(238, 238, 238);
+  --theme-700: rgb(201, 201, 201);
+  --theme-600: rgb(164, 164, 164);
+  --theme-500: rgb(127, 127, 127);
+  --theme-400: rgb(90, 90, 90);
+  --theme-300: rgb(53, 53, 53);
+  --theme-200: rgb(16, 16, 16);
+  --theme-100: rgb(0, 0, 0);
 }
 
 .dark {
@@ -118,10 +134,25 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  --cyan-300: oklch(76.159% 0.12952 179.628);
+  --cyan-300: oklch(73.49% 0.12778 179.235);
+  --cyan-500: oklch(63.81% 0.10996 179.203);
+  --red-500: oklch(61.671% 0.1866 14.973);
+  --red-700: oklch(47.063% 0.14165 14.726);
 
-  --red-500: oklch(64.395% 0.20435 15.392);
-  --purple-500: oklch(52.536% 0.24037 278.687);
+  --theme-100: rgb(238, 238, 238);
+  --theme-200: rgb(201, 201, 201);
+  --theme-300: rgb(164, 164, 164);
+  --theme-400: rgb(127, 127, 127);
+  --theme-500: rgb(90, 90, 90);
+  --theme-600: rgb(53, 53, 53);
+  --theme-700: rgb(16, 16, 16);
+  --theme-800: rgb(0, 0, 0);
+}
+
+.borderDashed {
+  @apply border-2;
+  @apply border-dashed;
+  border-color: rgb(0, 200, 227);
 }
 
 @layer base {

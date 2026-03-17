@@ -2,12 +2,14 @@
 
 import {
   Icon,
-  IconChartBar,
+  IconArrowNarrowUpDashed,
+  IconLayoutDashboard,
   IconInnerShadowTop,
   IconSettings,
   IconCash,
   IconChartPie
 } from "@tabler/icons-react"
+import Link from "next/link"
 
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
@@ -36,24 +38,29 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
-      icon: IconChartBar,
+      url: "/dashboard",
+      icon: IconLayoutDashboard,
+    },
+    {
+      title: "Analytics",
+      url: "/analytics",
+      icon: IconArrowNarrowUpDashed,
     },
     {
       title: "Categories",
-      url: "#",
+      url: "/categories",
       icon: IconChartPie,
     },
     {
       title: "Transactions",
-      url: "#",
+      url: "/transactions",
       icon: IconCash,
     }
   ],
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: IconSettings,
     }
   ]
@@ -69,10 +76,10 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/dashboard">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">Smart Finance Inc.</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
