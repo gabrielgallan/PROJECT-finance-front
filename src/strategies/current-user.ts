@@ -1,21 +1,19 @@
-import { HTTPGetProfile } from "@/http/get-profile"
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+import { HTTPGetProfile } from "@/http/get-profile";
+import { redirect } from "next/navigation";
+import { verifyToken } from "./verify-token";
 
 export async function currentUser() {
-    const storageCookies = await cookies()
+  const token = await verifyToken();
 
-    const token = storageCookies.get('token')?.value
+  if (!token) {
+    redirect("/auth/sign-in");
+  }
 
-    if (!token) {
-        redirect('/auth/sign-in')
-    }
+  try {
+    const { user } = await HTTPGetProfile();
 
-    try {
-        const { user } = await HTTPGetProfile()
-
-        return { user }
-    } catch {
-        redirect('/api/auth/sign-out')
-    }
+    return { user };
+  } catch {
+    redirect("/api/auth/sign-out");
+  }
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Icon,
@@ -7,13 +7,13 @@ import {
   IconInnerShadowTop,
   IconSettings,
   IconCash,
-  IconChartPie
-} from "@tabler/icons-react"
-import Link from "next/link"
+  IconChartPie,
+} from "@tabler/icons-react";
+import Link from "next/link";
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser, NavUserProps } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser, NavUserProps } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -22,16 +22,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 interface NavMain {
-  title: string,
-  url: string,
-  icon: Icon,
+  title: string;
+  url: string;
+  icon: Icon;
 }
 
 interface AppSideBarProps extends React.ComponentProps<typeof Sidebar> {
-  user: NavUserProps['user']
+  user: NavUserProps["user"];
 }
 
 const data = {
@@ -55,16 +55,16 @@ const data = {
       title: "Transactions",
       url: "/transactions",
       icon: IconCash,
-    }
+    },
   ],
   navSecondary: [
     {
       title: "Settings",
       url: "/settings",
       icon: IconSettings,
-    }
-  ]
-}
+    },
+  ],
+};
 
 export function AppSidebar({ user, ...props }: AppSideBarProps) {
   return (
@@ -78,7 +78,7 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
             >
               <Link href="/dashboard">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Smart Finance Inc.</span>
+                <span className="text-base font-semibold">Valora</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -92,5 +92,5 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
