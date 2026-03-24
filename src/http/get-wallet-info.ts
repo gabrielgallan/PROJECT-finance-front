@@ -1,9 +1,11 @@
 import { api } from './api-client'
 
 type HTTPGetWalletInfoResponse = {
-    balance: number
-    createdAt: string,
-    updatedAt: string
+    wallet: {
+        balance: number
+        createdAt: string,
+        updatedAt: string
+    }
 }
 
 export async function HTTPGetWalletInfo() {

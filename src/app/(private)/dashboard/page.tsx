@@ -55,6 +55,7 @@ const monthProgressChartData = [
 ];
 
 const categoriesRadialChartData = [
+  { category: "salary", balance: 310, fill: "var(--theme-100)" },
   { category: "ifood", balance: 310, fill: "var(--theme-100)" },
   { category: "sports", balance: 200, fill: "var(--theme-200)" },
   { category: "uber", balance: 150, fill: "var(--theme-300)" },

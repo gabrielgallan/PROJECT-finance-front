@@ -8,6 +8,9 @@ import {
   IconSettings,
   IconCash,
   IconChartPie,
+  IconDatabase,
+  IconReport,
+  IconFileWord,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -23,6 +26,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { NavDocuments } from "./nav-documents";
 
 interface NavMain {
   title: string;
@@ -64,6 +68,23 @@ const data = {
       icon: IconSettings,
     },
   ],
+  documents: [
+    {
+      name: "Data Library",
+      url: "#",
+      icon: IconDatabase,
+    },
+    {
+      name: "Reports",
+      url: "#",
+      icon: IconReport,
+    },
+    {
+      name: "Word Assistant",
+      url: "#",
+      icon: IconFileWord,
+    },
+  ],
 };
 
 export function AppSidebar({ user, ...props }: AppSideBarProps) {
@@ -86,6 +107,7 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

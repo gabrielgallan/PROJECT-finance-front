@@ -28,7 +28,7 @@ export function TestSectionCards() {
 
                     <CardAction>
                         <Badge variant="outline">
-                            <IconTrendingUp className="size-4 text-emerald-500" />
+                            <IconTrendingUp className="size-4 text-[var(--emerald-300)]" />
                             +8.4%
                         </Badge>
                     </CardAction>
@@ -58,7 +58,7 @@ export function TestSectionCards() {
 
                     <CardAction>
                         <Badge variant="outline">
-                            <IconTrendingUp className="size-4 text-emerald-500" />
+                            <IconTrendingUp className="size-4 text-[var(--emerald-300)]" />
                             +6%
                         </Badge>
                     </CardAction>
@@ -84,7 +84,7 @@ export function TestSectionCards() {
 
                     <CardAction>
                         <Badge variant="outline">
-                            <IconTrendingUp className="size-4 text-emerald-500" />
+                            <IconTrendingUp className="size-4 text-[var(--emerald-300)]" />
                             +12.1%
                         </Badge>
                     </CardAction>
@@ -110,7 +110,7 @@ export function TestSectionCards() {
 
                     <CardAction>
                         <Badge variant="outline">
-                            <IconTrendingDown className="size-4 text-red-500" />
+                            <IconTrendingDown className="size-4 text-[var(--red-300)]" />
                             -4.3%
                         </Badge>
                     </CardAction>

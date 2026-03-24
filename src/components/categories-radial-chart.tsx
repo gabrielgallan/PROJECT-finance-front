@@ -61,7 +61,7 @@ export function CategoriesRadialChart({ data, month }: CategoriesRadialChartProp
 
                         <PolarGrid gridType="circle" />
 
-                        <RadialBar dataKey="balance" background />
+                        <RadialBar dataKey="balance" />
 
                     </RadialBarChart>
                 </ChartContainer>
