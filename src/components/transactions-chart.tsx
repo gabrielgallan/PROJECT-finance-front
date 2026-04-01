@@ -29,11 +29,11 @@ export const description = "A savings current month progress chart";
 const transactionsChartConfig = {
     income: {
         label: "Income",
-        color: "var(--theme-100)",
+        color: "var(--cyan-400)",
     },
     expense: {
         label: "Expense",
-        color: "var(--theme-500)",
+        color: "var(--chart-5)",
     },
 } satisfies ChartConfig;
 

@@ -24,6 +24,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Transaction } from "@/http/types/transaction";
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 type TransactionsDataTableProps = {
   data: Transaction[];

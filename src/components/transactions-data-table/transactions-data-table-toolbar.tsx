@@ -1,7 +1,7 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { ChevronDown, Plus, SlidersHorizontal, X } from "lucide-react";
 
 import { TransactionsDateRangeFilter } from "@/components/transactions-data-table/transactions-date-range-filter";
 import { Button } from "@/components/ui/button";
@@ -61,6 +61,10 @@ export function TransactionsDataTableToolbar({
   return (
     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-1 items-center gap-2 overflow-x-auto pb-1">
+        <TransactionsDateRangeFilter label="From date" value={fromDate} onChange={onFromDateChange} />
+
+        <TransactionsDateRangeFilter label="To date" value={toDate} onChange={onToDateChange} />
+
         <Select value={category} onValueChange={onCategoryChange}>
           <SelectTrigger className="h-9 w-[200px] shrink-0 bg-transparent dark:bg-transparent">
             <SelectValue placeholder="Category" />
@@ -76,9 +80,6 @@ export function TransactionsDataTableToolbar({
           </SelectContent>
         </Select>
 
-        <TransactionsDateRangeFilter label="From date" value={fromDate} onChange={onFromDateChange} />
-        <TransactionsDateRangeFilter label="To date" value={toDate} onChange={onToDateChange} />
-
         {hasActiveFilters ? (
           <Button variant="ghost" onClick={onResetFilters} className="h-9 px-2 lg:px-3">
             Reset
@@ -86,6 +87,24 @@ export function TransactionsDataTableToolbar({
           </Button>
         ) : null}
       </div>
+
+      <Button className="group relative flex items-center px-3 pr-3 hover:pr-32 transition-all duration-300 overflow-hidden">
+        <Plus />
+
+        <span
+          className="
+                            absolute left-8
+                            opacity-0
+                            translate-x-[-10px]
+                            whitespace-nowrap
+                            transition-all duration-300 ease-out
+                            group-hover:opacity-100
+                            group-hover:translate-x-0
+                          "
+        >
+          New Transaction
+        </span>
+      </Button>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

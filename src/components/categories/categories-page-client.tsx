@@ -11,6 +11,7 @@ import { CategoriesRadialChart } from "@/components/categories/categories-radial
 import { CategoryFormDialog } from "@/components/categories/category-form-dialog"
 import { DeleteCategoryAlertDialog } from "@/components/categories/delete-category-alert-dialog"
 import type { Category, CategoriesOverview, CategoryFormPayload, CategoryStatus } from "@/components/categories/types"
+import { CategoriesLinearChart } from "../categories-linear-chart"
 
 type CategoriesPageClientProps = {
   initialCategories: Category[]
@@ -128,12 +129,12 @@ export function CategoriesPageClient({ initialCategories }: CategoriesPageClient
   return (
     <div className="@container/main flex flex-col p-4 md:p-6">
       <div className="flex flex-col gap-4">
-        <section className="grid grid-cols-1 gap-4 lg:h-[20rem] lg:grid-cols-12">
-          <section className="overflow-hidden lg:col-span-6">
-            <CategoriesPageHeader overview={overview} onCreateClick={handleOpenCreate} />
+        <section className="grid grid-cols-1 gap-4 lg:h-[22rem] lg:grid-cols-12">
+          <section className="overflow-hidden lg:col-span-7">
+            <CategoriesLinearChart month="March 2026" />
           </section>
 
-          <section className="overflow-hidden lg:col-span-6">
+          <section className="overflow-hidden lg:col-span-5">
             <div className="h-full">
               <CategoriesRadialChart data={categories} />
             </div>

@@ -128,16 +128,6 @@ export default async function TransactionsPage() {
           </div>
         </section>
 
-        <section className="flex justify-end">
-          <Button className="group flex items-center gap-2 rounded-full px-3 hover:px-5 transition-all duration-200 overflow-hidden">
-            <Plus />
-
-            <span className="max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all duration-200 whitespace-nowrap">
-              New Transaction
-            </span>
-          </Button>
-        </section>
-
         <section className="flex flex-col gap-4">
           <TransactionsDataTable data={transactions} />
         </section>

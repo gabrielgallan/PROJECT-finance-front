@@ -66,6 +66,14 @@ export function CategoriesRadialChart({ data }: CategoriesRadialChartProps) {
           <ChartContainer config={chartConfig} className="min-h-[220px] w-full">
             <PieChart>
               <ChartTooltip content={<ChartTooltipContent nameKey="key" />} />
+              <ChartLegend
+                verticalAlign="bottom"
+                content={
+                  <ChartLegendContent
+                    nameKey="key"
+                  />
+                }
+              />
               <Pie
                 data={usageData}
                 dataKey="value"
@@ -73,11 +81,6 @@ export function CategoriesRadialChart({ data }: CategoriesRadialChartProps) {
                 innerRadius={54}
                 outerRadius={88}
                 strokeWidth={2}
-              />
-              <ChartLegend
-                content={<ChartLegendContent nameKey="key" className="flex-wrap" />}
-                verticalAlign="bottom"
-                align="center"
               />
             </PieChart>
           </ChartContainer>

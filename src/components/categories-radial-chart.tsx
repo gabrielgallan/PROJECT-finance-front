@@ -6,6 +6,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -17,6 +18,7 @@ import {
     ChartTooltipContent,
     type ChartConfig,
 } from "@/components/ui/chart"
+import { TrendingUp } from "lucide-react"
 
 export const description = "A radial chart"
 
@@ -57,8 +59,8 @@ export function CategoriesRadialChart({ data, month }: CategoriesRadialChartProp
                 >
                     <RadialBarChart
                         data={data}
-                        innerRadius={30}
-                        outerRadius={135}
+                        innerRadius={50}
+                        outerRadius={110}
                         margin={{ top: 0, right: 50, bottom: 0, left: 0 }}
                     >
                         <ChartTooltip
@@ -84,7 +86,7 @@ export function CategoriesRadialChart({ data, month }: CategoriesRadialChartProp
                 </ChartContainer>
             </CardContent>
 
-            {/* <CardFooter className="flex-col gap-2 text-sm">
+            <CardFooter className="flex-col gap-2 text-sm">
                 <div className="flex items-center gap-2 leading-none font-medium">
                     Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
                 </div>
@@ -92,7 +94,7 @@ export function CategoriesRadialChart({ data, month }: CategoriesRadialChartProp
                 <div className="leading-none text-muted-foreground">
                     Showing total savings by categories for the last month
                 </div>
-            </CardFooter> */}
+            </CardFooter>
 
         </Card>
     )

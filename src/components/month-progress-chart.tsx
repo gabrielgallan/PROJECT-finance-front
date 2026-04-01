@@ -5,6 +5,7 @@ import {
   AreaChart,
   CartesianGrid,
   XAxis,
+  YAxis,
 } from "recharts";
 
 import {
@@ -47,30 +48,6 @@ export function MonthProgressChart({ data, month }: MonthProgressChartProps) {
       </CardHeader>
 
       <CardContent className="flex min-h-0 flex-1 px-4 pb-4">
-        {/* <ChartContainer
-                    config={monthProgressChartConfig}
-                    className="h-full w-full"
-                >
-                    <BarChart accessibilityLayer data={data}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="date"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            tickFormatter={(value) => value}
-                        />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="dot" />}
-                        />
-                        <Bar
-                            dataKey="savings"
-                            fill="var(--color-savings)"
-                            radius={15}
-                        />
-                    </BarChart>
-                </ChartContainer> */}
         <ChartContainer
           config={monthProgressChartConfig}
           className="h-full w-full !aspect-auto"
@@ -84,6 +61,13 @@ export function MonthProgressChart({ data, month }: MonthProgressChartProps) {
               tickMargin={8}
               tickFormatter={(value) => value}
               interval="preserveStartEnd"
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickCount={5}
+              orientation="left"
+              width={40}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
@@ -102,7 +86,7 @@ export function MonthProgressChart({ data, month }: MonthProgressChartProps) {
             </defs>
             <Area
               dataKey="savings"
-              type="bump"
+              type="monotone"
               fill="url(#fillSavings)"
               fillOpacity={0.4}
               stroke="var(--color-savings)"
@@ -110,38 +94,6 @@ export function MonthProgressChart({ data, month }: MonthProgressChartProps) {
             />
           </AreaChart>
         </ChartContainer>
-        {/* <ChartContainer
-                    config={monthProgressChartConfig}
-                    className="h-full w-full"
-                    >
-                    <LineChart
-                        accessibilityLayer
-                        data={data}
-                        margin={{
-                            left: 12,
-                            right: 12,
-                        }}
-                    >
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="date"
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            tickFormatter={(value) => value}
-                            interval="preserveStartEnd"
-                        />
-                        <ChartTooltip content={<ChartTooltipContent/>}
-                        />
-                        <Line
-                        dataKey="savings"
-                        type="monotone"
-                        stroke="var(--purple-500)"
-                        strokeWidth={2}
-                        dot={false}
-                        />
-                    </LineChart>
-                    </ChartContainer> */}
       </CardContent>
     </Card>
   );
