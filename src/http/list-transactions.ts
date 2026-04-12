@@ -10,7 +10,7 @@ interface TransactionCategory {
     slug: string
 }
 
-interface TransactionItem {
+export interface TransactionItem {
     id: string
     title: string
     amount: number
@@ -31,7 +31,7 @@ export type HTTPListTransactionsResponse = {
     pagination: TransactionPagination
 }
 
-type ListTransactionsQuery = {
+export type ListTransactionsQuery = {
     categoryId?: string,
     start?: string,
     end?: string,

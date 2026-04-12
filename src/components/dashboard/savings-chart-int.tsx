@@ -101,7 +101,7 @@ export function SavingsChartInteractive({ data }: SavingsChartInteractiveProps) 
               tickFormatter={(value) => {
                 const [month, year] = value.split(' ')
 
-                return `${month.slice(0, 3)} ${year.slice(2, 4)}`
+                return `${month.slice(0, 3)} ${year}`
               }}
               interval="preserveStartEnd"
             />

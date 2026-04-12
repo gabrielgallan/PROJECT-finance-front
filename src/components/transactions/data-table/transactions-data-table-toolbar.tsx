@@ -2,8 +2,9 @@
 
 import { Table } from "@tanstack/react-table";
 import { ChevronDown, Plus, SlidersHorizontal, X } from "lucide-react";
+import { type DateRange } from "react-day-picker";
 
-import { TransactionsDateRangeFilter } from "@/components/transactions/data-table/transactions-date-range-filter";
+import { DateRangePicker } from "@/components/date-range-picker";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,69 +20,65 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Transaction } from "@/http/types/transaction";
-
-const categoryOptions = [
-  { value: "all", label: "All categories" },
-  { value: "income", label: "Renda" },
-  { value: "food", label: "Alimentacao" },
-  { value: "housing", label: "Moradia" },
-  { value: "services", label: "Servicos" },
-  { value: "sales", label: "Vendas" },
-  { value: "transport", label: "Transporte" },
-  { value: "health", label: "Saude" },
-  { value: "investments", label: "Investimentos" },
-  { value: "extra-income", label: "Extra" },
-  { value: "uncategorized", label: "Sem categoria" },
-];
+import { CategoryItem } from "@/http/list-categories";
+import { type TransactionItem } from "@/http/list-transactions";
+import { useEffect } from "react";
 
 type TransactionsDataTableToolbarProps = {
-  table: Table<Transaction>;
-  category: string;
-  fromDate?: Date;
-  toDate?: Date;
+  table: Table<TransactionItem>;
+  categorySelected: string;
+  categories: CategoryItem[];
+  dateRange?: DateRange;
+  isLoading?: boolean;
   onCategoryChange: (value: string) => void;
-  onFromDateChange: (date?: Date) => void;
-  onToDateChange: (date?: Date) => void;
+  onDateRangeChange: (range?: DateRange) => void;
   onResetFilters: () => void;
 };
 
 export function TransactionsDataTableToolbar({
   table,
-  category,
-  fromDate,
-  toDate,
+  categorySelected,
+  categories,
+  dateRange,
+  isLoading = false,
   onCategoryChange,
-  onFromDateChange,
-  onToDateChange,
+  onDateRangeChange,
   onResetFilters,
 }: TransactionsDataTableToolbarProps) {
-  const hasActiveFilters = category !== "all" || Boolean(fromDate) || Boolean(toDate);
+  const hasFilters = categorySelected !== "all" || Boolean(dateRange?.from || dateRange?.to);
 
   return (
     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-1 items-center gap-2 overflow-x-auto pb-1">
-        <TransactionsDateRangeFilter label="From date" value={fromDate} onChange={onFromDateChange} />
+        <DateRangePicker
+          value={dateRange}
+          onChange={onDateRangeChange}
+          placeholder="Date range"
+          className="h-9 w-[260px] shrink-0"
+          disabled={isLoading}
+        />
 
-        <TransactionsDateRangeFilter label="To date" value={toDate} onChange={onToDateChange} />
-
-        <Select value={category} onValueChange={onCategoryChange}>
-          <SelectTrigger className="h-9 w-[200px] shrink-0 bg-transparent dark:bg-transparent">
+        <Select value={categorySelected} onValueChange={onCategoryChange}>
+          <SelectTrigger
+            className="h-9 w-[200px] shrink-0 bg-transparent dark:bg-transparent"
+            disabled={isLoading}
+          >
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent align="start">
             <SelectGroup>
-              {categoryOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+              <SelectItem value={'all'}>All categories</SelectItem>
+              {categories.map((option) => (
+                <SelectItem key={option.id} value={option.id}>
+                  {option.name}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
 
-        {hasActiveFilters ? (
-          <Button variant="ghost" onClick={onResetFilters} className="h-9 px-2 lg:px-3">
+        {hasFilters ? (
+          <Button variant="ghost" onClick={onResetFilters} className="h-9 px-2 lg:px-3" disabled={isLoading}>
             Reset
             <X data-icon="inline-end" />
           </Button>
@@ -91,17 +88,7 @@ export function TransactionsDataTableToolbar({
       <Button className="group relative flex items-center px-3 pr-3 hover:pr-32 transition-all duration-300 overflow-hidden">
         <Plus />
 
-        <span
-          className="
-                            absolute left-8
-                            opacity-0
-                            translate-x-[-10px]
-                            whitespace-nowrap
-                            transition-all duration-300 ease-out
-                            group-hover:opacity-100
-                            group-hover:translate-x-0
-                          "
-        >
+        <span className="absolute left-8 opacity-0 translate-x-[-10px] whitespace-nowrap transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0">
           New Transaction
         </span>
       </Button>

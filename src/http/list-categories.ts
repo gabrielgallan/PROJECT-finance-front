@@ -1,12 +1,14 @@
 import { api } from './api-client'
 
+export type CategoryItem = {
+    id: string,
+    name: string,
+    slug: string,
+    description: string | null
+}
+
 export type HTTPListCategoriesResponse = {
-    categories: {
-        id: string,
-        name: string,
-        slug: string,
-        description: string | null
-    }[]
+    categories: CategoryItem[]
 }
 
 export async function HTTPListCategories() {

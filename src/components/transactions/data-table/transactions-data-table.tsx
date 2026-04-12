@@ -4,16 +4,15 @@ import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
+import { type DateRange } from "react-day-picker";
 
 import { transactionsDataTableColumns } from "@/components/transactions/data-table/transactions-data-table-columns";
-import { TransactionsDataTablePagination } from "@/components/transactions/data-table/transactions-data-table-pagination";
 import { TransactionsDataTableToolbar } from "@/components/transactions/data-table/transactions-data-table-toolbar";
 import {
   Table,
@@ -23,68 +22,72 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Transaction } from "@/http/types/transaction";
+import { CategoryItem } from "@/http/list-categories";
+import { TransactionItem } from "@/http/list-transactions";
+import { type TransactionsFilters } from "@/app/(private)/(sidebar)/transactions/types";
+import { SkeletonTable } from "./transactions-data-table-skeleton";
+import { EmptyOutline } from "./empty";
 
-type TransactionsDataTableProps = {
-  data: Transaction[];
+type TransactionsDataTableData = {
+  transactions: TransactionItem[];
+  categories: CategoryItem[]
 };
 
-function getCreatedAtDate(value: string) {
-  const parsedDate = new Date(value);
+type TransactionsDataTableProps = {
+  data: TransactionsDataTableData;
+  onFiltersChange: (filter: TransactionsFilters) => void;
+  isLoading?: boolean;
+};
 
-  if (Number.isNaN(parsedDate.getTime())) {
-    return null;
-  }
-
-  return parsedDate;
-}
-
-export function TransactionsDataTable({ data }: TransactionsDataTableProps) {
+export function TransactionsDataTable({
+  data,
+  onFiltersChange,
+  isLoading = false,
+}: TransactionsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [category, setCategory] = React.useState("all");
-  const [fromDate, setFromDate] = React.useState<Date>();
-  const [toDate, setToDate] = React.useState<Date>();
 
-  const filteredData = React.useMemo(() => {
-    return data.filter((transaction) => {
-      const transactionDate = getCreatedAtDate(transaction.createdAt);
+  const [category, setCategory] = React.useState<'all' | string>('all');
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>();
 
-      if (!transactionDate) {
-        return false;
-      }
+  const { transactions, categories } = data;
 
-      if (fromDate && transactionDate < fromDate) {
-        return false;
-      }
+  function handleCategoryChange(data: string) {
+    setCategory(data);
 
-      if (toDate) {
-        const endOfDay = new Date(toDate);
-        endOfDay.setHours(23, 59, 59, 999);
-
-        if (transactionDate > endOfDay) {
-          return false;
-        }
-      }
-
-      if (category !== "all") {
-        const currentCategory = transaction.category?.slug ?? "uncategorized";
-        return currentCategory === category;
-      }
-
-      return true;
+    onFiltersChange({
+      category: data,
+      dateRange,
     });
-  }, [category, data, fromDate, toDate]);
+  }
+
+  function handleSetDateRange(data: DateRange | undefined) {
+    setDateRange(data);
+
+    onFiltersChange({
+      category,
+      dateRange: data,
+    });
+  }
+
+  function handleResetFilters() {
+    setCategory('all');
+    setDateRange(undefined);
+
+    onFiltersChange({
+      category: 'all',
+      dateRange: undefined,
+    });
+  }
 
   const table = useReactTable({
-    data: filteredData,
+    data: transactions,
     columns: transactionsDataTableColumns,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     state: {
@@ -99,68 +102,76 @@ export function TransactionsDataTable({ data }: TransactionsDataTableProps) {
     },
   });
 
-  const handleResetFilters = () => {
-    setCategory("all");
-    setFromDate(undefined);
-    setToDate(undefined);
-  };
+  React.useEffect(() => {
+    table.setPageIndex(0);
+  }, [category, dateRange, table]);
+
+  const hasFilters = category !== 'all' || dateRange !== undefined
+  const hasRows = table.getRowModel().rows.length
 
   return (
     <div className="flex flex-col gap-3">
       <TransactionsDataTableToolbar
         table={table}
-        category={category}
-        fromDate={fromDate}
-        toDate={toDate}
-        onCategoryChange={setCategory}
-        onFromDateChange={setFromDate}
-        onToDateChange={setToDate}
+        categorySelected={category}
+        categories={categories}
+        dateRange={dateRange}
+        isLoading={isLoading}
+        onCategoryChange={handleCategoryChange}
+        onDateRangeChange={handleSetDateRange}
         onResetFilters={handleResetFilters}
       />
 
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
+      {isLoading ? <SkeletonTable /> :
+        (!hasRows && !hasFilters) ? <EmptyOutline /> :
+          (<div className="overflow-hidden rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
+              </TableHeader>
 
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={row.original.operation === "income" ? "bg-gradient-to-r from-cyan-500/10 via-cyan-500/4 to-transparent hover:from-cyan-500/12 hover:via-cyan-500/6" : undefined}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              <TableBody>
+                {(
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      className={
+                        row.original.operation === "income"
+                          ? "bg-gradient-to-r from-cyan-500/10 via-cyan-500/4 to-transparent hover:from-cyan-500/12 hover:via-cyan-500/6"
+                          : undefined
+                      }
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>)
 
-      <TransactionsDataTablePagination table={table} />
+      }
+      {/* <TransactionsDataTablePagination table={table} /> */}
     </div>
   );
 }

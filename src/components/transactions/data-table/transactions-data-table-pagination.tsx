@@ -20,10 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Transaction } from "@/http/types/transaction";
+import { type TransactionItem } from "@/http/list-transactions";
 
 type TransactionsDataTablePaginationProps = {
-  table: Table<Transaction>;
+  table: Table<TransactionItem>;
 };
 
 const pageSizeOptions = [10, 20, 30, 50];

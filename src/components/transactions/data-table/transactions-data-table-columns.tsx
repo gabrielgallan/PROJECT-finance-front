@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Transaction } from "@/http/types/transaction";
+import { type TransactionItem } from "@/http/list-transactions";
 
 type SortableHeaderProps = {
   title: string;
@@ -41,7 +41,7 @@ function getCreatedAtDate(value: string) {
   return parsedDate;
 }
 
-export const transactionsDataTableColumns: ColumnDef<Transaction>[] = [
+export const transactionsDataTableColumns: ColumnDef<TransactionItem>[] = [
   {
     id: "select",
     header: ({ table }) => (

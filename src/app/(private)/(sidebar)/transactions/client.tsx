@@ -1,34 +1,96 @@
-"use client";
+'use client'
 
-import { TransactionsCountRadarChart, TransactionsCountRadarChartData } from "@/components/transactions/transactions-count-radar-chart";
+import { useState, useTransition } from "react";
+
 import { TransactionsDataTable } from "@/components/transactions/data-table/transactions-data-table";
-import { TransactionChartData, TransactionsChart } from "@/components/transactions/transactions-chart";
-import { Transaction } from "@/http/types/transaction";
+import { TransactionsCountRadarChart } from "@/components/transactions/transactions-count-radar-chart";
+import { TransactionsChart } from "@/components/transactions/transactions-chart";
+import { type HTTPGetYearProgressResponse } from "@/http/get-year-progress";
+import { type CategoryItem } from "@/http/list-categories";
+import { type TransactionItem } from "@/http/list-transactions";
+import { YearProgressMapper } from "@/strategies/mappers/year-progress-mapper";
 
-export interface TransactionsPageClientProps {
-  transactions: Transaction[];
-  yearProgress: TransactionChartData[]
-  counts: TransactionsCountRadarChartData[]
+import { listTransctionsAction } from "./actions";
+import { type TransactionsFilters } from "./types";
+
+interface TransactionsPageClientProps {
+    progress: HTTPGetYearProgressResponse;
+    _transactions: TransactionItem[];
+    categories: CategoryItem[];
 }
 
-export function TransactionsPageClient({ transactions, yearProgress, counts }: TransactionsPageClientProps) {
-  return (
-    <div className="@container/main flex flex-col p-4 md:p-6">
-      <div className="flex flex-col gap-4">
-        <section className="grid grid-cols-1 gap-4 lg:h-[24rem] lg:grid-cols-12">
-          <div className="overflow-hidden lg:col-span-8">
-            <TransactionsChart data={yearProgress} />
-          </div>
+function getFilterDateRange(filters: TransactionsFilters) {
+    const from = filters.dateRange?.from;
+    const to = filters.dateRange?.to;
 
-          <div className="overflow-hidden lg:col-span-4">
-            <TransactionsCountRadarChart data={counts} />
-          </div>
-        </section>
+    if (!from || !to) {
+        return { startDate: undefined, endDate: undefined };
+    }
 
-        <section className="flex flex-col gap-4">
-          <TransactionsDataTable data={transactions} />
-        </section>
-      </div>
-    </div>
-  );
+    const startDate = new Date(from);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(to);
+    endDate.setHours(23, 59, 59, 999);
+
+    return {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+    };
+}
+
+export default function TransactionsPageClient({
+    progress,
+    _transactions,
+    categories,
+}: TransactionsPageClientProps) {
+    const [transactions, setTransactions] = useState<TransactionItem[]>(_transactions);
+    const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
+
+    function handleFiltersChange(filters: TransactionsFilters) {
+        const { startDate, endDate } = getFilterDateRange(filters);
+
+        startTransition(async () => {
+            const result = await listTransctionsAction({
+                categoryId: filters.category === 'all' ? undefined : filters.category,
+                startDate,
+                endDate,
+            });
+
+            if (!result.success) {
+                setError(result.message);
+                return;
+            }
+
+            setError(null);
+            setTransactions(result.transactions);
+        });
+    }
+
+    return (
+        <div className="@container/main flex flex-col p-4 md:p-6">
+            <div className="flex flex-col gap-4">
+                <section className="grid grid-cols-1 gap-4 lg:h-[24rem] lg:grid-cols-12">
+                    <div className="overflow-hidden lg:col-span-8">
+                        <TransactionsChart data={YearProgressMapper.toTransactionsChart(progress)} />
+                    </div>
+
+                    <div className="overflow-hidden lg:col-span-4">
+                        <TransactionsCountRadarChart data={YearProgressMapper.toTransactionsCountChart(progress)} />
+                    </div>
+                </section>
+
+                <section className="flex flex-col gap-2">
+                    <TransactionsDataTable
+                        data={{ transactions, categories }}
+                        onFiltersChange={handleFiltersChange}
+                        isLoading={isPending}
+                    />
+
+                    {error ? <p className="text-sm text-destructive">{error}</p> : null}
+                </section>
+            </div>
+        </div>
+    );
 }
